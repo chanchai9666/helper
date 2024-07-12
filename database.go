@@ -62,7 +62,6 @@ func DBConnectionString(dbConfig DBConfig) (dsn string, driver string) {
 		dsn = "Invalid DriverName"
 		driver = "NoConnect"
 	}
-
 	return dsn, driver
 }
 

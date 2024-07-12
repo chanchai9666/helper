@@ -1,5 +1,7 @@
 package helper
 
+import "golang.org/x/crypto/bcrypt"
+
 // ฟังก์ชันที่สร้าง map จาก slice ของ struct ใด ๆ โดยกำหนด key และ value ตามที่เลือก
 /*
 อธิบายโค้ด:
@@ -215,4 +217,19 @@ func ToTripleNestedMap[K1 comparable, K2 comparable, K3 comparable, T any](items
 		ผลลัพธ์จะเป็น triple nested map ที่มี key ซ้อนกันตามที่กำหนด (เช่น Username -> Email -> ID, Age -> Active -> ID) และค่าของ map เป็น struct User ซึ่งสามารถใช้งานต่อไปได้ตามต้องการ
 
 	*/
+}
+
+// แฮชรหัสผ่าน
+func HashPassword(password string) (string, error) {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+	return string(hashedPassword), nil
+}
+
+// ใช้สำหรับเปรียบเทียบรหัสผ่านที่ผู้ใช้ป้อนเข้ามา กับ รหัสผ่านที่ถูกแฮชแล้ว
+func ComparePassword(hashedPassword string, password string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+	return err == nil
 }
